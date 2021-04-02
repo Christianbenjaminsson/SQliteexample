@@ -35,8 +35,14 @@ public class MainActivity extends AppCompatActivity {
              if (stringName.length() <= 0 || stringEmail.length() <= 0) {
                  Toast.makeText(MainActivity.this, "Enter All Data", Toast.LENGTH_SHORT).show();
              } else {
+                 DatabaseHelperClass databaseHelperClass = new DatabaseHelperClass(MainActivity.this);
+                 EmployeeModelClass employeeModelClass = new EmployeeModelClass(stringName, stringEmail);
+                 databaseHelperClass.addEmployee(employeeModelClass);
 
+                 Toast.makeText(MainActivity.this, "Add Employee Successfully", Toast.LENGTH_SHORT).show();
 
+                 finish();
+                 startActivity(getIntent());
              }
             }
         });
