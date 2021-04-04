@@ -2,10 +2,13 @@ package com.example.sqliteexample;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelperClass extends SQLiteOpenHelper {
 
@@ -53,5 +56,20 @@ public class DatabaseHelperClass extends SQLiteOpenHelper {
         sqLiteDatabase.insert(DatabaseHelperClass.TABLE_NAME, null, contentValues);
     }
 
-
+    public List<EmployeeModelClass> getEmployeeList() {
+        String sql = "select * from " + TABLE_NAME;
+        sqLiteDatabase = this.getReadableDatabase();
+        List<EmployeeModelClass> storeEmployee = new ArrayList<>();
+        Cursor cursor = sqLiteDatabase.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int id = Integer.parseInt(cursor.getString(0));
+                String name = cursor.getString(1);
+                String email = cursor.getString(2);
+                storeEmployee.add(new EmployeeModelClass(id, name, email));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return storeEmployee;
+    }
 }
